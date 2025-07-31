@@ -1,0 +1,24 @@
+pipeline {
+    agent {
+        node {
+            label 'agent01'
+        }
+    }
+    environment {
+        K8S_CREDS = "K8s-config-file"
+    }
+
+    stages {
+
+        // ****************
+        // *** KILL APP ***
+        // ****************
+        stage("Kill_The_App"){
+            steps {
+               withKubeConfig([credentialsId: "${K8S_CREDS}"]) {
+                   sh 'kubectl delete -f k8s/tfs-staging.yaml || true'
+               }
+            }
+        }
+    }
+}

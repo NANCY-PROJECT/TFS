@@ -1,0 +1,79 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tfs-deployment
+  labels:
+    app: tfs
+    scope: testing
+  namespace: nancy-staging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tfs
+  template:
+    metadata:
+      labels:
+        app: tfs
+    spec:
+      containers:
+        - name: tfs-container
+          image: harbor.nancy.rid-intrasoft.eu/tfs/tfs:latest
+          ports:
+            - containerPort: 8000
+          command:
+            [
+              "gunicorn",
+              "-w",
+              "4",
+              "-b",
+              "0.0.0.0",
+              "--access-logfile=-",
+              "app:create_app()",
+            ]
+          env:
+            - name: PYTHONPATH
+              value: /tfs
+      imagePullSecrets:
+        - name: regrobot-dev
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tfs-service
+  namespace: nancy-staging
+spec:
+  type: ClusterIP
+  selector:
+    app: dummyrest
+  ports:
+    - protocol: TCP
+      port: 8000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  name: tfs-ingress-rule
+  namespace: nancy-staging
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: tfs.k8s-cluster.nancy.rid-intrasoft.eu
+      http:
+        paths:
+          - backend:
+              service:
+                name: tfs-service
+                port:
+                  number: 8000
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - tfs.k8s-cluster.nancy.rid-intrasoft.eu
+      secretName: secret-tls
