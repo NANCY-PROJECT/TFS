@@ -4,22 +4,22 @@ kind: Deployment
 metadata:
   name: tfs-deployment
   labels:
-    app: tfs
+    app: myapp
     scope: testing
   namespace: nancy-staging
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: tfs
+      app: myapp
   template:
     metadata:
       labels:
-        app: tfs
+        app: myap
     spec:
       containers:
-        - name: tfs-container
-          image: harbor.nancy.rid-intrasoft.eu/tfs/tfs:latest
+        - name: myapp-container
+          image: harbor.nancy.rid-intrasoft.eu/tfs/myapp:latest
           ports:
             - containerPort: 8000
           command:
@@ -34,14 +34,14 @@ spec:
             ]
           env:
             - name: PYTHONPATH
-              value: /tfs
+              value: /myapp
       imagePullSecrets:
         - name: regrobot-dev
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: tfs-service
+  name: myapp-service
   namespace: nancy-staging
 spec:
   type: ClusterIP
@@ -58,17 +58,17 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
     kubernetes.io/ingress.class: "nginx"
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
-  name: tfs-ingress-rule
+  name: myapp-ingress-rule
   namespace: nancy-staging
 spec:
   ingressClassName: nginx
   rules:
-    - host: tfs.k8s-cluster.nancy.rid-intrasoft.eu
+    - host: myapp.k8s-cluster.nancy.rid-intrasoft.eu
       http:
         paths:
           - backend:
               service:
-                name: tfs-service
+                name: myapp-service
                 port:
                   number: 8000
             path: /
