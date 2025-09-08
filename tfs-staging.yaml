@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: tfs-deployment
+  name: myapp-deployment
   labels:
     app: myapp
     scope: testing
@@ -15,7 +15,7 @@ spec:
   template:
     metadata:
       labels:
-        app: myap
+        app: myapp
     spec:
       containers:
         - name: myapp-container
