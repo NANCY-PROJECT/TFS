@@ -5,8 +5,8 @@ pipeline {
         }
     }
     environment {
-        APP_NAME = "tfs"
-        APP_URL = "https://tfs.k8s-cluster.nancy.rid-intrasoft.eu"
+        APP_NAME = "myapp"
+        APP_URL = "https://myapp.k8s-cluster.nancy.rid-intrasoft.eu"
         K8S_CREDS = "K8s-config-file"
     }
 
@@ -17,7 +17,7 @@ pipeline {
         stage("Deployment"){
             steps {
                withKubeConfig([credentialsId: "${K8S_CREDS}"]) {
-                   sh 'kubectl apply -f k8s/tfs-staging.yaml'
+                   sh 'kubectl apply -f k8s/myapp-staging.yaml'
                }
             }
         }
