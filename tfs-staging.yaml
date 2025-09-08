@@ -46,7 +46,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app: dummyrest
+    app: myapp  # Corrected from dummyrest to myapp
   ports:
     - protocol: TCP
       port: 8000
