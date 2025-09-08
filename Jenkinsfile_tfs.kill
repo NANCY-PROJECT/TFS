@@ -16,7 +16,7 @@ pipeline {
         stage("Kill_The_App"){
             steps {
                withKubeConfig([credentialsId: "${K8S_CREDS}"]) {
-                   sh 'kubectl delete -f k8s/tfs-staging.yaml || true'
+                   sh 'kubectl delete -f k8s/myapp-staging.yaml || true'
                }
             }
         }
