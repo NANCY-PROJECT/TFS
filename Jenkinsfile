@@ -17,7 +17,7 @@ pipeline {
         stage("Deployment"){
             steps {
                withKubeConfig([credentialsId: "${K8S_CREDS}"]) {
-                   sh 'kubectl apply -f myapp-staging.yaml' --validate=false
+                   sh 'kubectl apply -f myapp-staging.yaml --validate=false'
                }
             }
         }
