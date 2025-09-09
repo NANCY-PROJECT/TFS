@@ -75,5 +75,5 @@ spec:
             pathType: Prefix
   tls:
     - hosts:
-        - tfs.k8s-cluster.nancy.rid-intrasoft.eu
+        - myapp.k8s-cluster.nancy.rid-intrasoft.eu
       secretName: secret-tls
