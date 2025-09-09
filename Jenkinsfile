@@ -17,7 +17,7 @@ pipeline {
         stage("Deployment"){
             steps {
                withKubeConfig([credentialsId: "${K8S_CREDS}"]) {
-                   sh 'kubectl apply -f k8s/myapp-staging.yaml'
+                   sh 'kubectl apply -f myapp-staging.yaml'
                }
             }
         }
