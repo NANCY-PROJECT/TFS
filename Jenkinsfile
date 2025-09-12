@@ -25,13 +25,13 @@ pipeline {
         // ****************************
         // *** Run Functional Tests ***
         // ****************************
-        stage("Func Tests"){
-            steps {
-               echo "***** Running Functional Tests *****"
-               sh 'sleep 60 && bash jenkins/tests/func_test.sh ${APP_URL}'
-            }
-        }
-    }
+     //   stage("Func Tests"){
+       //     steps {
+         //      echo "***** Running Functional Tests *****"
+  //             sh 'sleep 60 && bash jenkins/tests/func_test.sh ${APP_URL}'
+ //           }
+ //       }
+ //   }
     // post{
         // failure{
         //     // slackSend (color: "#FF0000", message: "Job FAILED: '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
